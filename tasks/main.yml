@@ -1,0 +1,18 @@
+---
+# tasks file for lighthouse-role
+- name: Install required packages
+  become: true
+  ansible.builtin.yum:
+    name: "{{ item }}"
+  with_items: "{{ necessary_packages }}"
+- name: Get Lightkhouse Archive
+  ansible.builtin.get_url:
+    url: "{{ lighthouse_link }}"
+    dest: ./lighthouse.zip
+    mode: '0644'
+- name: Unpack Lighthouse Archive
+  become: true
+  ansible.builtin.unarchive:
+    src: ./lighthouse.zip
+    dest: /usr/share/nginx
+    remote_src: true
